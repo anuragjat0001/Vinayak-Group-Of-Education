@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery | Vinayak Group of Institutions Chomu | Campus Life</title>
+  <meta name="description" content="Explore the vibrant campus life at Vinayak Group of Institutions, Chomu. Photos of campus, Moot Court, labs, sports, cultural events, and student activities.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .gallery-filter { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:40px; }
+    .gallery-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .gallery-card { border-radius:var(--radius-md); overflow:hidden; cursor:pointer; position:relative; background:var(--navy); }
+    .gallery-card::after { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(13,27,42,0.7) 0%,transparent 60%); opacity:0; transition:var(--transition); }
+    .gallery-card:hover::after { opacity:1; }
+    .gallery-card svg { width:100%; display:block; transition:transform 0.5s ease; }
+    .gallery-card:hover svg { transform:scale(1.07); }
+    .gallery-card.wide { grid-column:span 2; }
+    .gallery-card.tall { grid-row:span 2; }
+    .gallery-card-caption { position:absolute; bottom:14px; left:14px; right:14px; z-index:2; opacity:0; transform:translateY(8px); transition:var(--transition); }
+    .gallery-card:hover .gallery-card-caption { opacity:1; transform:translateY(0); }
+    .gallery-card-caption-title { color:var(--white); font-weight:600; font-size:0.9rem; display:block; }
+    .gallery-card-caption-sub { color:rgba(255,255,255,0.65); font-size:0.72rem; }
+    .gallery-card-zoom { position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; opacity:0; transition:var(--transition); backdrop-filter:blur(4px); }
+    .gallery-card:hover .gallery-card-zoom { opacity:1; }
+    .gallery-card-zoom svg { width:16px; height:16px; color:white; }
+
+    /* Lightbox */
+    #lightbox { position:fixed; inset:0; z-index:9999; background:rgba(5,10,20,0.97); display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:var(--transition); }
+    #lightbox.open { opacity:1; visibility:visible; }
+    .lb-content { max-width:90vw; max-height:90vh; position:relative; text-align:center; }
+    .lb-content svg, .lb-content img { max-width:85vw; max-height:78vh; border-radius:var(--radius-md); display:block; margin:0 auto; }
+    .lb-caption { color:rgba(255,255,255,0.7); font-size:0.88rem; margin-top:14px; }
+    .lb-close { position:absolute; top:-50px; right:0; width:40px; height:40px; border-radius:50%; border:1.5px solid rgba(255,255,255,0.3); color:white; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--transition); background:none; }
+    .lb-close:hover { background:var(--gold); border-color:var(--gold); color:var(--navy); }
+    .lb-close svg { width:18px; height:18px; }
+    .lb-nav { position:fixed; top:50%; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; border:1.5px solid rgba(255,255,255,0.2); color:white; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--transition); background:none; z-index:10000; }
+    .lb-nav:hover { background:var(--gold); border-color:var(--gold); color:var(--navy); }
+    .lb-nav svg { width:20px; height:20px; }
+    #lb-prev { left:20px; }
+    #lb-next { right:20px; }
+    .lb-counter { position:fixed; top:20px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.5); font-size:0.8rem; letter-spacing:0.15em; z-index:10000; }
+
+    @media(max-width:900px) {
+      .gallery-grid { grid-template-columns:repeat(2,1fr); }
+      .gallery-card.wide { grid-column:span 1; }
+      .gallery-card.tall { grid-row:span 1; }
+    }
+    @media(max-width:500px) {
+      .gallery-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<div id="nav-container"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg><span>Gallery</span></div>
+    <span class="eyebrow">Campus Life</span>
+    <h1>Life at<br><em style="color:var(--gold-bright);">Vinayak</em></h1>
+    <p>From the grandeur of our 50-acre campus to the intensity of Moot Court debates — explore the vibrant visual story of the Vinayak Group of Institutions.</p>
+  </div>
+</div>
+
+<main>
+<section class="section">
+  <div class="container">
+
+    <!-- Filters -->
+    <div class="gallery-filter reveal">
+      <button class="filter-btn active" onclick="filterGallery('all',this)">All</button>
+      <button class="filter-btn" onclick="filterGallery('campus',this)">Campus</button>
+      <button class="filter-btn" onclick="filterGallery('academic',this)">Academic</button>
+      <button class="filter-btn" onclick="filterGallery('events',this)">Events</button>
+      <button class="filter-btn" onclick="filterGallery('sports',this)">Sports &amp; Training</button>
+      <button class="filter-btn" onclick="filterGallery('law',this)">Moot Court</button>
+      <button class="filter-btn" onclick="filterGallery('labs',this)">Laboratories</button>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="gallery-grid" id="galleryGrid">
+
+      <!-- CAMPUS -->
+      <div class="gallery-card wide tall" data-cat="campus" data-title="Main Campus — Vinayak Group" data-sub="50-acre peaceful campus, Chomu, Jaipur" onclick="openLightbox(0)">
+        <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="400" fill="#0D1B2A"/>
+          <rect x="0" y="280" width="600" height="120" fill="#1A3C14"/>
+          <!-- Sky -->
+          <rect x="0" y="0" width="600" height="280" fill="linear-gradient(#0D2847,#1A4A7A)"/>
+          <!-- Main building big -->
+          <rect x="140" y="80" width="320" height="200" fill="#1A3C6A" rx="4"/>
+          <rect x="120" y="65" width="360" height="25" fill="#223D72" rx="3"/>
+          <!-- Columns -->
+          <rect x="160" y="80" width="18" height="200" fill="#1F4882"/>
+          <rect x="200" y="80" width="18" height="200" fill="#1F4882"/>
+          <rect x="240" y="80" width="18" height="200" fill="#1F4882"/>
+          <rect x="280" y="80" width="18" height="200" fill="#1F4882"/>
+          <rect x="320" y="80" width="18" height="200" fill="#1F4882"/>
+          <rect x="360" y="80" width="18" height="200" fill="#1F4882"/>
+          <rect x="400" y="80" width="18" height="200" fill="#1F4882"/>
+          <rect x="430" y="80" width="18" height="200" fill="#1F4882"/>
+          <!-- Windows -->
+          <rect x="220" y="110" width="44" height="36" fill="#C9933A" rx="2" opacity="0.6"/>
+          <rect x="280" y="110" width="44" height="36" fill="#C9933A" rx="2" opacity="0.6"/>
+          <rect x="340" y="110" width="44" height="36" fill="#C9933A" rx="2" opacity="0.6"/>
+          <rect x="220" y="170" width="44" height="36" fill="#C9933A" rx="2" opacity="0.5"/>
+          <rect x="280" y="170" width="44" height="36" fill="#C9933A" rx="2" opacity="0.5"/>
+          <rect x="340" y="170" width="44" height="36" fill="#C9933A" rx="2" opacity="0.5"/>
+          <!-- Door -->
+          <rect x="270" y="230" width="60" height="50" fill="#C9933A" rx="4"/>
+          <!-- Path -->
+          <rect x="282" y="280" width="36" height="120" fill="#24501E"/>
+          <!-- Trees -->
+          <circle cx="80" cy="280" r="44" fill="#1A5C30"/>
+          <circle cx="80" cy="256" r="36" fill="#226838"/>
+          <rect x="72" y="296" width="16" height="30" fill="#4A2C10"/>
+          <circle cx="520" cy="280" r="44" fill="#1A5C30"/>
+          <circle cx="520" cy="256" r="36" fill="#226838"/>
+          <rect x="512" y="296" width="16" height="30" fill="#4A2C10"/>
+          <!-- Flag -->
+          <line x1="300" y1="10" x2="300" y2="65" stroke="#C9933A" stroke-width="2.5"/>
+          <rect x="300" y="10" width="44" height="28" fill="#FF9933" rx="2"/>
+          <!-- Stars in sky -->
+          <circle cx="100" cy="40" r="1.5" fill="white" opacity="0.7"/>
+          <circle cx="200" cy="25" r="1" fill="white" opacity="0.5"/>
+          <circle cx="480" cy="35" r="1.5" fill="white" opacity="0.7"/>
+          <circle cx="550" cy="20" r="1" fill="white" opacity="0.5"/>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">Main Campus — 50 Acres</span><span class="gallery-card-caption-sub">Vinayak Vihar, Kacholiya Road, Chomu</span></div>
+      </div>
+
+      <!-- MOOT COURT -->
+      <div class="gallery-card tall" data-cat="law" data-title="Moot Court — Vinayak Law College" data-sub="Chomu's premier legal training facility" onclick="openLightbox(1)">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="400" fill="#1A0D2A"/>
+          <!-- Court room -->
+          <rect x="20" y="40" width="260" height="320" fill="#2A1444"/>
+          <!-- Judge bench -->
+          <rect x="80" y="60" width="140" height="50" fill="#3A1C5C" rx="4"/>
+          <rect x="90" y="55" width="120" height="20" fill="#4A2466" rx="2"/>
+          <!-- Judge chair -->
+          <rect x="125" y="35" width="50" height="30" fill="#4A2466" rx="4"/>
+          <!-- Scale of justice -->
+          <line x1="150" y1="90" x2="150" y2="130" stroke="#C9933A" stroke-width="2"/>
+          <line x1="125" y1="100" x2="175" y2="100" stroke="#C9933A" stroke-width="2"/>
+          <ellipse cx="128" cy="115" rx="14" ry="8" fill="none" stroke="#C9933A" stroke-width="1.5"/>
+          <ellipse cx="172" cy="115" rx="14" ry="8" fill="none" stroke="#C9933A" stroke-width="1.5"/>
+          <line x1="125" y1="100" x2="128" y2="107" stroke="#C9933A" stroke-width="1.5"/>
+          <line x1="175" y1="100" x2="172" y2="107" stroke="#C9933A" stroke-width="1.5"/>
+          <!-- Podiums -->
+          <rect x="40" y="160" width="60" height="80" fill="#331850" rx="2"/>
+          <rect x="200" y="160" width="60" height="80" fill="#331850" rx="2"/>
+          <!-- Students/lawyers (silhouettes) -->
+          <circle cx="70" cy="148" r="14" fill="#3A2260"/>
+          <path d="M50,240 Q50,200 70,200 Q90,200 90,240 L90,250 L50,250 Z" fill="#3A2260"/>
+          <circle cx="230" cy="148" r="14" fill="#3A2260"/>
+          <path d="M210,240 Q210,200 230,200 Q250,200 250,240 L250,250 L210,250 Z" fill="#3A2260"/>
+          <!-- Gallery seats -->
+          <rect x="30" y="270" width="240" height="60" fill="#2D1450" rx="4"/>
+          <rect x="40" y="280" width="20" height="40" fill="#3A1C5C" rx="2"/>
+          <rect x="70" y="280" width="20" height="40" fill="#3A1C5C" rx="2"/>
+          <rect x="100" y="280" width="20" height="40" fill="#3A1C5C" rx="2"/>
+          <rect x="130" y="280" width="20" height="40" fill="#3A1C5C" rx="2"/>
+          <rect x="160" y="280" width="20" height="40" fill="#3A1C5C" rx="2"/>
+          <rect x="190" y="280" width="20" height="40" fill="#3A1C5C" rx="2"/>
+          <rect x="220" y="280" width="20" height="40" fill="#3A1C5C" rx="2"/>
+          <!-- Text -->
+          <text x="150" y="370" text-anchor="middle" fill="#C9933A" font-size="9" font-family="Arial" font-weight="bold">MOOT COURT — VINAYAK LAW COLLEGE</text>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">Moot Court</span><span class="gallery-card-caption-sub">State-of-the-art judicial training facility</span></div>
+      </div>
+
+      <!-- LABS -->
+      <div class="gallery-card" data-cat="labs" data-title="DBT Star Laboratories" data-sub="Advanced research-grade science labs" onclick="openLightbox(2)">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#0F2A1F"/>
+          <!-- Lab bench -->
+          <rect x="20" y="100" width="260" height="20" fill="#1A4A36" rx="2"/>
+          <!-- Beakers & equipment -->
+          <path d="M50,100 L42,60 L68,60 L60,100 Z" fill="none" stroke="#C9933A" stroke-width="2"/>
+          <rect x="44" y="58" width="22" height="6" fill="#1A4A36" stroke="#C9933A" stroke-width="1"/>
+          <circle cx="54" cy="80" r="8" fill="#2A8A6A" opacity="0.6"/>
+          <!-- Flask -->
+          <path d="M110,100 L95,70 L100,55 L120,55 L125,70 L110,100 Z" fill="none" stroke="#3B9FFF" stroke-width="2"/>
+          <circle cx="110" cy="78" r="10" fill="#1A5C8A" opacity="0.5"/>
+          <!-- Microscope -->
+          <rect x="170" y="70" width="24" height="30" fill="#2A5C40" rx="2"/>
+          <rect x="178" y="58" width="8" height="16" fill="#2A5C40"/>
+          <rect x="174" y="55" width="16" height="6" fill="#3A7A54" rx="2"/>
+          <circle cx="182" cy="53" r="5" fill="none" stroke="#C9933A" stroke-width="1.5"/>
+          <rect x="162" y="100" width="40" height="6" fill="#2A5C40" rx="2"/>
+          <!-- Test tubes rack -->
+          <rect x="220" y="70" width="8" height="30" fill="none" stroke="#88CCFF" stroke-width="1.5"/>
+          <rect x="234" y="65" width="8" height="35" fill="none" stroke="#FF9988" stroke-width="1.5"/>
+          <rect x="248" y="72" width="8" height="28" fill="none" stroke="#88FF88" stroke-width="1.5"/>
+          <!-- DBT Star badge -->
+          <rect x="180" y="10" width="110" height="28" fill="#C9933A" rx="14"/>
+          <text x="235" y="28" text-anchor="middle" fill="#0F2A1F" font-size="9" font-weight="bold" font-family="Arial">DBT ★ STAR COLLEGE</text>
+          <rect x="0" y="155" width="300" height="45" fill="#081A12"/>
+          <text x="150" y="178" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="Arial">Advanced Research Laboratory</text>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">DBT Star Laboratories</span><span class="gallery-card-caption-sub">Vinayak International College</span></div>
+      </div>
+
+      <!-- SPORTS / MILITARY -->
+      <div class="gallery-card" data-cat="sports" data-title="Physical Training & Yoga" data-sub="Mandatory military-style fitness programme" onclick="openLightbox(3)">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#0A1F0A"/>
+          <!-- Ground -->
+          <rect x="0" y="140" width="300" height="60" fill="#1A4A1A"/>
+          <!-- Track markings -->
+          <ellipse cx="150" cy="140" rx="120" ry="40" fill="none" stroke="#2A6A2A" stroke-width="3"/>
+          <!-- Students in formation (silhouettes) -->
+          <g fill="#2A5C2A">
+            <circle cx="70" cy="125" r="7"/><rect x="63" y="132" width="14" height="18" rx="3"/>
+            <circle cx="100" cy="125" r="7"/><rect x="93" y="132" width="14" height="18" rx="3"/>
+            <circle cx="130" cy="125" r="7"/><rect x="123" y="132" width="14" height="18" rx="3"/>
+            <circle cx="160" cy="125" r="7"/><rect x="153" y="132" width="14" height="18" rx="3"/>
+            <circle cx="190" cy="125" r="7"/><rect x="183" y="132" width="14" height="18" rx="3"/>
+            <circle cx="220" cy="125" r="7"/><rect x="213" y="132" width="14" height="18" rx="3"/>
+          </g>
+          <!-- Sun -->
+          <circle cx="150" cy="40" r="30" fill="#E8AF4A" opacity="0.3"/>
+          <circle cx="150" cy="40" r="20" fill="#E8AF4A" opacity="0.5"/>
+          <!-- Yoga mat symbol -->
+          <rect x="40" y="60" width="80" height="12" fill="#C9933A" rx="6" opacity="0.6"/>
+          <!-- Text -->
+          <text x="150" y="188" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="Arial">Military Training &amp; Yoga Programme</text>
+          <rect x="170" y="8" width="120" height="26" fill="rgba(201,147,58,0.8)" rx="13"/>
+          <text x="230" y="25" text-anchor="middle" fill="#0A1F0A" font-size="9" font-weight="bold" font-family="Arial">MANDATORY FITNESS</text>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">Military Training &amp; Yoga</span><span class="gallery-card-caption-sub">Mandatory physical conditioning programme</span></div>
+      </div>
+
+      <!-- REPUBLIC DAY EVENT -->
+      <div class="gallery-card wide" data-cat="events" data-title="Republic Day Cultural Fest" data-sub="Annual cultural celebration at Vinayak Group" onclick="openLightbox(4)">
+        <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="200" fill="#1A0D2A"/>
+          <!-- Stage -->
+          <rect x="150" y="60" width="300" height="100" fill="#2D1A4A" rx="4"/>
+          <rect x="140" y="55" width="320" height="15" fill="#3A2260" rx="2"/>
+          <!-- Curtains -->
+          <rect x="140" y="55" width="60" height="105" fill="#8B1C2A"/>
+          <rect x="400" y="55" width="60" height="105" fill="#8B1C2A"/>
+          <!-- Performer silhouettes -->
+          <circle cx="240" cy="100" r="12" fill="#4A2466"/>
+          <path d="M228,160 Q228,120 240,120 Q252,120 252,160 Z" fill="#4A2466"/>
+          <circle cx="300" cy="95" r="12" fill="#4A2466"/>
+          <path d="M288,160 Q288,115 300,115 Q312,115 312,160 Z" fill="#4A2466"/>
+          <circle cx="360" cy="100" r="12" fill="#4A2466"/>
+          <path d="M348,160 Q348,120 360,120 Q372,120 372,160 Z" fill="#4A2466"/>
+          <!-- Spotlights -->
+          <circle cx="200" cy="20" r="8" fill="#FFD700" opacity="0.6"/>
+          <circle cx="300" cy="15" r="8" fill="#FFD700" opacity="0.6"/>
+          <circle cx="400" cy="20" r="8" fill="#FFD700" opacity="0.6"/>
+          <!-- Confetti dots -->
+          <circle cx="100" cy="50" r="4" fill="#FF4444" opacity="0.7"/>
+          <circle cx="130" cy="30" r="3" fill="#44FF44" opacity="0.7"/>
+          <circle cx="470" cy="45" r="4" fill="#4444FF" opacity="0.7"/>
+          <circle cx="500" cy="25" r="3" fill="#FFAA44" opacity="0.7"/>
+          <circle cx="80" cy="80" r="3" fill="#FF44FF" opacity="0.7"/>
+          <circle cx="520" cy="70" r="3" fill="#44FFFF" opacity="0.7"/>
+          <text x="300" y="190" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="Arial">Republic Day Cultural Fest — Annual Celebration</text>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">Republic Day Cultural Fest</span><span class="gallery-card-caption-sub">Annual cultural celebration</span></div>
+      </div>
+
+      <!-- LIBRARY -->
+      <div class="gallery-card" data-cat="academic" data-title="Central Library" data-sub="Extensive collection including law journals" onclick="openLightbox(5)">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#1A1505"/>
+          <!-- Shelves -->
+          <rect x="20" y="30" width="260" height="10" fill="#4A3010" rx="2"/>
+          <rect x="20" y="80" width="260" height="10" fill="#4A3010" rx="2"/>
+          <rect x="20" y="130" width="260" height="10" fill="#4A3010" rx="2"/>
+          <!-- Books on shelves -->
+          <rect x="25" y="40" width="12" height="40" fill="#B03A2E" rx="1"/>
+          <rect x="38" y="43" width="10" height="37" fill="#1565C0" rx="1"/>
+          <rect x="49" y="40" width="14" height="40" fill="#2E7D32" rx="1"/>
+          <rect x="64" y="42" width="11" height="38" fill="#7B1FA2" rx="1"/>
+          <rect x="76" y="40" width="13" height="40" fill="#C9933A" rx="1"/>
+          <rect x="90" y="43" width="10" height="37" fill="#1A237E" rx="1"/>
+          <rect x="101" y="40" width="12" height="40" fill="#4A148C" rx="1"/>
+          <rect x="114" y="41" width="11" height="39" fill="#E65100" rx="1"/>
+          <rect x="126" y="40" width="13" height="40" fill="#1B5E20" rx="1"/>
+          <rect x="140" y="43" width="10" height="37" fill="#880E4F" rx="1"/>
+          <rect x="151" y="40" width="12" height="40" fill="#0D47A1" rx="1"/>
+          <rect x="164" y="42" width="11" height="38" fill="#BF360C" rx="1"/>
+          <rect x="176" y="40" width="14" height="40" fill="#1A237E" rx="1"/>
+          <rect x="191" y="43" width="10" height="37" fill="#33691E" rx="1"/>
+          <rect x="202" y="40" width="12" height="40" fill="#4E342E" rx="1"/>
+          <!-- Second shelf -->
+          <rect x="25" y="90" width="12" height="40" fill="#1565C0" rx="1"/>
+          <rect x="38" y="93" width="10" height="37" fill="#B03A2E" rx="1"/>
+          <rect x="49" y="90" width="14" height="40" fill="#7B1FA2" rx="1"/>
+          <rect x="64" y="92" width="11" height="38" fill="#2E7D32" rx="1"/>
+          <rect x="76" y="90" width="13" height="40" fill="#C9933A" rx="1"/>
+          <rect x="90" y="92" width="10" height="37" fill="#880E4F" rx="1"/>
+          <rect x="101" y="90" width="12" height="40" fill="#E65100" rx="1"/>
+          <rect x="114" y="91" width="11" height="39" fill="#1A237E" rx="1"/>
+          <rect x="126" y="90" width="13" height="40" fill="#4A148C" rx="1"/>
+          <rect x="140" y="93" width="10" height="37" fill="#1B5E20" rx="1"/>
+          <rect x="151" y="90" width="12" height="40" fill="#BF360C" rx="1"/>
+          <rect x="164" y="92" width="11" height="38" fill="#0D47A1" rx="1"/>
+          <!-- Reading table -->
+          <rect x="120" y="155" width="60" height="8" fill="#6D4C41" rx="2"/>
+          <rect x="125" y="163" width="8" height="20" fill="#6D4C41"/>
+          <rect x="167" y="163" width="8" height="20" fill="#6D4C41"/>
+          <text x="150" y="194" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="Arial">Central Library — Extensive Collection</text>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">Central Library</span><span class="gallery-card-caption-sub">Comprehensive academic collection</span></div>
+      </div>
+
+      <!-- GIRLS COLLEGE -->
+      <div class="gallery-card" data-cat="campus" data-title="Vinayak Girls P.G. College" data-sub="Dedicated women's higher education institution" onclick="openLightbox(6)">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#1A0F2E"/>
+          <rect x="0" y="140" width="300" height="60" fill="#1A1A40"/>
+          <!-- Building -->
+          <rect x="60" y="60" width="180" height="80" fill="#2D1A4A" rx="4"/>
+          <rect x="50" y="52" width="200" height="15" fill="#3A2260" rx="2"/>
+          <!-- Arched windows -->
+          <rect x="80" y="75" width="30" height="45" fill="#3A1C5C" rx="15 15 0 0"/>
+          <rect x="80" y="75" width="30" height="45" fill="none" stroke="#C9933A" stroke-width="1.5" rx="15 15 0 0"/>
+          <rect x="135" y="75" width="30" height="45" fill="#3A1C5C" rx="15 15 0 0"/>
+          <rect x="135" y="75" width="30" height="45" fill="none" stroke="#C9933A" stroke-width="1.5" rx="15 15 0 0"/>
+          <rect x="190" y="75" width="30" height="45" fill="#3A1C5C" rx="15 15 0 0"/>
+          <rect x="190" y="75" width="30" height="45" fill="none" stroke="#C9933A" stroke-width="1.5" rx="15 15 0 0"/>
+          <!-- Door -->
+          <rect x="135" y="115" width="30" height="25" fill="#C9933A" rx="4"/>
+          <!-- Women badge -->
+          <rect x="170" y="8" width="120" height="26" fill="#880E4F" rx="13"/>
+          <text x="230" y="24" text-anchor="middle" fill="white" font-size="9" font-weight="bold" font-family="Arial">WOMEN'S COLLEGE</text>
+          <text x="150" y="188" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="Arial">Vinayak Girls P.G. College, Chomu</text>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">Vinayak Girls College</span><span class="gallery-card-caption-sub">Empowering women since 1995</span></div>
+      </div>
+
+      <!-- NSS ACTIVITY -->
+      <div class="gallery-card" data-cat="events" data-title="NSS — Blood Donation Camp" data-sub="National Service Scheme activities" onclick="openLightbox(7)">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#0A1F0A"/>
+          <!-- Red cross symbol -->
+          <rect x="125" y="50" width="50" height="100" fill="#B03A2E" rx="4"/>
+          <rect x="100" y="75" width="100" height="50" fill="#B03A2E" rx="4"/>
+          <rect x="127" y="52" width="46" height="96" fill="#C0392B" rx="3"/>
+          <rect x="102" y="77" width="96" height="46" fill="#C0392B" rx="3"/>
+          <!-- White heart in cross -->
+          <path d="M150,80 C150,73 142,70 139,76 C136,82 142,90 150,98 C158,90 164,82 161,76 C158,70 150,73 150,80 Z" fill="white"/>
+          <!-- NSS text -->
+          <rect x="10" y="10" width="60" height="26" fill="rgba(176,58,46,0.8)" rx="13"/>
+          <text x="40" y="26" text-anchor="middle" fill="white" font-size="10" font-weight="bold" font-family="Arial">NSS</text>
+          <text x="150" y="188" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="Arial">Blood Donation Camp — National Service Scheme</text>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">NSS Activities</span><span class="gallery-card-caption-sub">Blood donation &amp; social service</span></div>
+      </div>
+
+      <!-- SCHOOL -->
+      <div class="gallery-card" data-cat="campus" data-title="Vinayak International School" data-sub="CBSE affiliated, DigiBoard classrooms" onclick="openLightbox(8)">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#0F1F0F"/>
+          <rect x="0" y="150" width="300" height="50" fill="#1A3A1A"/>
+          <!-- School building -->
+          <rect x="50" y="70" width="200" height="80" fill="#183018" rx="4"/>
+          <path d="M40,70 L150,30 L260,70 Z" fill="#1F4520"/>
+          <!-- DigiBoards (classroom windows showing screens) -->
+          <rect x="65" y="88" width="40" height="30" fill="#1565C0" rx="2"/>
+          <text x="85" y="107" text-anchor="middle" fill="white" font-size="7" font-family="Arial">DIGI</text>
+          <rect x="130" y="88" width="40" height="30" fill="#1565C0" rx="2"/>
+          <text x="150" y="107" text-anchor="middle" fill="white" font-size="7" font-family="Arial">BOARD</text>
+          <rect x="195" y="88" width="40" height="30" fill="#1565C0" rx="2"/>
+          <text x="215" y="107" text-anchor="middle" fill="white" font-size="7" font-family="Arial">SMART</text>
+          <!-- Door -->
+          <rect x="136" y="128" width="28" height="22" fill="#C9933A" rx="3"/>
+          <!-- CBSE badge -->
+          <rect x="170" y="8" width="120" height="26" fill="#1565C0" rx="13"/>
+          <text x="230" y="24" text-anchor="middle" fill="white" font-size="9" font-weight="bold" font-family="Arial">CBSE AFFILIATED</text>
+          <text x="150" y="188" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="Arial">Vinayak International School — 20 DigiBoard Classrooms</text>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">Vinayak International School</span><span class="gallery-card-caption-sub">CBSE — 20 DigiBoard Smart Classes</span></div>
+      </div>
+
+      <!-- SWIMMING POOL -->
+      <div class="gallery-card" data-cat="sports" data-title="Swimming Pool" data-sub="Olympic-size pool at school campus" onclick="openLightbox(9)">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#0A1A2A"/>
+          <!-- Pool water -->
+          <rect x="30" y="60" width="240" height="100" fill="#1565C0" rx="6"/>
+          <!-- Water shimmer effect -->
+          <path d="M30,80 Q75,70 120,80 Q165,90 210,80 Q240,73 270,80" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+          <path d="M30,100 Q75,90 120,100 Q165,110 210,100 Q240,93 270,100" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+          <path d="M30,120 Q75,110 120,120 Q165,130 210,120 Q240,113 270,120" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+          <!-- Lane dividers -->
+          <line x1="30" y1="60" x2="30" y2="160" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+          <line x1="82" y1="60" x2="82" y2="160" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="5,5"/>
+          <line x1="134" y1="60" x2="134" y2="160" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="5,5"/>
+          <line x1="186" y1="60" x2="186" y2="160" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="5,5"/>
+          <line x1="238" y1="60" x2="238" y2="160" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="5,5"/>
+          <!-- Tiles -->
+          <rect x="30" y="158" width="240" height="6" fill="#1A3A5A" rx="3"/>
+          <!-- Diving board -->
+          <rect x="240" y="40" width="40" height="6" fill="#C9933A" rx="2"/>
+          <rect x="272" y="30" width="6" height="36" fill="#C9933A" rx="2"/>
+          <text x="150" y="188" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="Arial">Swimming Pool — Vinayak International School</text>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">Swimming Pool</span><span class="gallery-card-caption-sub">School campus sports facility</span></div>
+      </div>
+
+      <!-- AWARD CEREMONY -->
+      <div class="gallery-card wide" data-cat="events" data-title="NAAC A++ Achievement Celebration" data-sub="National accreditation honour ceremony" onclick="openLightbox(10)">
+        <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="200" fill="#0D1B2A"/>
+          <!-- Trophy in center -->
+          <path d="M280,40 L320,40 L330,100 L300,110 L270,100 Z" fill="#C9933A"/>
+          <rect x="290" y="108" width="20" height="30" fill="#8B6520"/>
+          <rect x="275" y="138" width="50" height="10" fill="#C9933A" rx="2"/>
+          <!-- Trophy handles -->
+          <path d="M280,55 Q255,55 255,75 Q255,95 275,95" fill="none" stroke="#C9933A" stroke-width="4"/>
+          <path d="M320,55 Q345,55 345,75 Q345,95 325,95" fill="none" stroke="#C9933A" stroke-width="4"/>
+          <!-- Stars around -->
+          <text x="250" y="80" text-anchor="middle" fill="#E8AF4A" font-size="20">★</text>
+          <text x="350" y="80" text-anchor="middle" fill="#E8AF4A" font-size="20">★</text>
+          <text x="200" y="60" text-anchor="middle" fill="#E8AF4A" font-size="14" opacity="0.7">★</text>
+          <text x="400" y="60" text-anchor="middle" fill="#E8AF4A" font-size="14" opacity="0.7">★</text>
+          <!-- NAAC text -->
+          <text x="300" y="25" text-anchor="middle" fill="#C9933A" font-size="14" font-weight="bold" font-family="Arial">NAAC A++ • 3.82 CGPA</text>
+          <!-- Award text -->
+          <text x="300" y="175" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="10" font-family="Arial">NIRF Rank 81 • The Week #1 in Rajasthan • Ed. World #3 India</text>
+          <!-- Confetti -->
+          <circle cx="80" cy="50" r="5" fill="#FF4444" opacity="0.7"/>
+          <circle cx="520" cy="45" r="5" fill="#4444FF" opacity="0.7"/>
+          <circle cx="60" cy="120" r="4" fill="#44FF44" opacity="0.7"/>
+          <circle cx="540" cy="110" r="4" fill="#FFAA44" opacity="0.7"/>
+        </svg>
+        <div class="gallery-card-zoom"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg></div>
+        <div class="gallery-card-caption"><span class="gallery-card-caption-title">NAAC A++ Achievement</span><span class="gallery-card-caption-sub">3.82 CGPA — Among India's Highest</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <div class="lb-counter" id="lbCounter">1 / 11</div>
+  <button class="lb-nav" id="lb-prev" onclick="changeLb(-1)">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+  </button>
+  <div class="lb-content">
+    <button class="lb-close" onclick="closeLb()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div id="lbImg"></div>
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+  <button class="lb-nav" id="lb-next" onclick="changeLb(1)">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<div id="footer-container"></div>
+<div id="fab-container"></div>
+<script src="main.js"></script>
+<script>
+const galleryCards = Array.from(document.querySelectorAll('.gallery-card'));
+let currentLb = 0;
+
+function openLightbox(idx) {
+  currentLb = idx;
+  updateLb();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function changeLb(dir) {
+  const visible = galleryCards.filter(c => c.style.display !== 'none');
+  currentLb = (currentLb + dir + visible.length) % visible.length;
+  updateLb();
+}
+function updateLb() {
+  const visible = galleryCards.filter(c => c.style.display !== 'none');
+  const card = visible[currentLb];
+  if (!card) return;
+  const svgEl = card.querySelector('svg');
+  document.getElementById('lbImg').innerHTML = svgEl ? svgEl.outerHTML : '';
+  document.getElementById('lbCaption').textContent = (card.dataset.title || '') + (card.dataset.sub ? ' — ' + card.dataset.sub : '');
+  document.getElementById('lbCounter').textContent = (currentLb + 1) + ' / ' + visible.length;
+}
+document.getElementById('lightbox').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeLb(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); if (e.key === 'ArrowLeft') changeLb(-1); if (e.key === 'ArrowRight') changeLb(1); });
+
+function filterGallery(cat, btn) {
+  document.querySelectorAll('.gallery-filter .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  galleryCards.forEach(c => { c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none'; });
+}
+</script>
+</body>
+</html>

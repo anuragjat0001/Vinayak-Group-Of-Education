@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Directory | Vinayak Group of Institutions Chomu | PhD NET Qualified Professors</title>
+  <meta name="description" content="Meet the distinguished faculty of Vinayak Group of Institutions, Chomu. 30+ PhD and NET qualified professors across Chemistry, Physics, Botany, Zoology, Mathematics, History, Political Science, Economics, Commerce, and more.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .dept-section { margin-bottom: 60px; }
+    .dept-header { display:flex; align-items:center; gap:16px; margin-bottom:28px; padding-bottom:16px; border-bottom:2px solid var(--cream); }
+    .dept-icon { width:48px; height:48px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .dept-icon svg { width:22px; height:22px; }
+    .dept-name { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--navy); }
+    .dept-count { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-light); font-weight:600; }
+    .faculty-grid-dense { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:20px; }
+    .fc { background:var(--white); border-radius:var(--radius-md); border:1px solid var(--cream); overflow:hidden; transition:var(--transition); box-shadow:var(--shadow-sm); }
+    .fc:hover { transform:translateY(-5px); box-shadow:var(--shadow-md); }
+    .fc-avatar { height:120px; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',cursive; font-size:2.2rem; letter-spacing:0.05em; position:relative; }
+    .fc-avatar::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--gold); }
+    .fc-body { padding:14px 16px; }
+    .fc-name { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--navy); margin-bottom:3px; line-height:1.3; }
+    .fc-subject { font-size:0.68rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold-dim); font-weight:600; display:block; margin-bottom:8px; }
+    .fc-quals { display:flex; gap:5px; flex-wrap:wrap; }
+    .fc-q { font-size:0.6rem; font-weight:700; padding:2px 7px; border-radius:100px; }
+    .q-phd { background:var(--navy); color:var(--gold-bright); }
+    .q-net { background:var(--gold-pale); color:var(--gold-dim); }
+    .q-msc { background:var(--off-white); color:var(--text-mid); }
+    .joined-badge { font-size:0.6rem; color:var(--text-light); margin-top:6px; display:block; }
+    .search-bar { display:flex; gap:14px; margin-bottom:40px; flex-wrap:wrap; }
+    .search-bar input { flex:1; min-width:200px; padding:12px 18px; border:1.5px solid var(--gray-light); border-radius:var(--radius-sm); font-size:0.9rem; outline:none; transition:var(--transition); }
+    .search-bar input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,147,58,0.1); }
+    .search-bar select { padding:12px 18px; border:1.5px solid var(--gray-light); border-radius:var(--radius-sm); font-size:0.9rem; outline:none; background:var(--white); cursor:pointer; transition:var(--transition); }
+    .search-bar select:focus { border-color:var(--gold); }
+  </style>
+</head>
+<body>
+<div id="nav-container"></div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg><span>Faculty</span></div>
+    <span class="eyebrow">Academic Excellence</span>
+    <h1>Our Distinguished<br><em style="color:var(--gold-bright);">Faculty</em></h1>
+    <p>A dedicated team of 30+ PhD and NET-qualified professors committed to delivering world-class education in a nurturing academic environment.</p>
+  </div>
+</div>
+
+<main>
+<section class="section">
+  <div class="container">
+
+    <!-- Faculty Stats -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:56px;" class="reveal">
+      <div style="text-align:center;background:var(--navy);border-radius:var(--radius-md);padding:24px;">
+        <span style="font-family:'Bebas Neue',cursive;font-size:3rem;color:var(--gold-bright);display:block;" data-count="30">30</span>
+        <span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.5);">Total Faculty Members</span>
+      </div>
+      <div style="text-align:center;background:var(--white);border-radius:var(--radius-md);padding:24px;border:1px solid var(--cream);">
+        <span style="font-family:'Bebas Neue',cursive;font-size:3rem;color:var(--gold);display:block;">8+</span>
+        <span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-light);">PhD Holders</span>
+      </div>
+      <div style="text-align:center;background:var(--white);border-radius:var(--radius-md);padding:24px;border:1px solid var(--cream);">
+        <span style="font-family:'Bebas Neue',cursive;font-size:3rem;color:var(--gold);display:block;">12+</span>
+        <span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-light);">NET Qualified</span>
+      </div>
+      <div style="text-align:center;background:var(--gold-pale);border-radius:var(--radius-md);padding:24px;border:1px solid var(--cream);">
+        <span style="font-family:'Bebas Neue',cursive;font-size:3rem;color:var(--navy);display:block;">8</span>
+        <span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-light);">Departments</span>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar reveal">
+      <input type="text" id="facultySearch" placeholder="Search faculty by name..." oninput="filterFaculty()">
+      <select id="deptFilter" onchange="filterFaculty()">
+        <option value="all">All Departments</option>
+        <option value="chemistry">Chemistry</option>
+        <option value="physics">Physics</option>
+        <option value="biology">Biological Sciences</option>
+        <option value="maths">Mathematics</option>
+        <option value="humanities">Humanities & Social Sciences</option>
+        <option value="languages">Languages & Literature</option>
+        <option value="commerce">Commerce</option>
+      </select>
+    </div>
+
+    <!-- CHEMISTRY & PHYSICS -->
+    <div class="dept-section" data-dept="chemistry" class="reveal">
+      <div class="dept-header">
+        <div class="dept-icon" style="background:#FFF3E0;"><svg fill="none" viewBox="0 0 24 24" stroke="#E65100"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg></div>
+        <div>
+          <div class="dept-name">Department of Chemical &amp; Physical Sciences</div>
+          <div class="dept-count">5 Faculty Members</div>
+        </div>
+      </div>
+      <div class="faculty-grid-dense">
+        <div class="fc" data-dept="chemistry">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A3C6A,#223D72);color:#E8AF4A;">KS</div>
+          <div class="fc-body">
+            <div class="fc-name">Dr. Kanika Sharma</div>
+            <span class="fc-subject">Chemistry</span>
+            <div class="fc-quals"><span class="fc-q q-phd">Ph.D</span><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.Sc.</span></div>
+            <span class="joined-badge">Joined: March 2023</span>
+          </div>
+        </div>
+        <div class="fc" data-dept="chemistry">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0F2A1F,#1A4A36);color:#E8AF4A;">AS</div>
+          <div class="fc-body">
+            <div class="fc-name">Dr. Ankit Sharma</div>
+            <span class="fc-subject">Chemistry</span>
+            <div class="fc-quals"><span class="fc-q q-phd">Ph.D</span><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.Sc.</span></div>
+            <span class="joined-badge">Joined: April 2024</span>
+          </div>
+        </div>
+        <div class="fc" data-dept="chemistry">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A0D2A,#2D1A4A);color:#E8AF4A;">SU</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Sonali Upadhyay</div>
+            <span class="fc-subject">Chemistry</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.Sc.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="chemistry">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A1505,#3D2E0A);color:#E8AF4A;">AY</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Ajay Kumar Yadav</div>
+            <span class="fc-subject">Chemistry</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.Sc.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="physics">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0A1F3C,#152D58);color:#E8AF4A;">NJ</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Nitin Jangir</div>
+            <span class="fc-subject">Physics</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.Sc.</span></div>
+            <span class="joined-badge">Joined: July 2023</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIOLOGICAL SCIENCES -->
+    <div class="dept-section" data-dept="biology">
+      <div class="dept-header">
+        <div class="dept-icon" style="background:#E8F8F0;"><svg fill="none" viewBox="0 0 24 24" stroke="#2E7D52"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
+        <div>
+          <div class="dept-name">Department of Biological Sciences &amp; Mathematics</div>
+          <div class="dept-count">6 Faculty Members</div>
+        </div>
+      </div>
+      <div class="faculty-grid-dense">
+        <div class="fc" data-dept="biology">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A3C2A,#2A5C3A);color:#E8AF4A;">SM</div>
+          <div class="fc-body">
+            <div class="fc-name">Dr. Sunita Maharia</div>
+            <span class="fc-subject">Botany</span>
+            <div class="fc-quals"><span class="fc-q q-phd">Ph.D</span><span class="fc-q q-msc">M.Sc.</span></div>
+            <span class="joined-badge">Joined: July 2023</span>
+          </div>
+        </div>
+        <div class="fc" data-dept="biology">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0F2A3A,#1A4A5C);color:#E8AF4A;">GS</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Gunjan Sharma</div>
+            <span class="fc-subject">Zoology</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.Sc.</span></div>
+            <span class="joined-badge">Joined: April 2024</span>
+          </div>
+        </div>
+        <div class="fc" data-dept="biology">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A2A0F,#2A4A1A);color:#E8AF4A;">CG</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Chhaya Gurjar</div>
+            <span class="fc-subject">Zoology</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.Sc.</span></div>
+            <span class="joined-badge">Joined: April 2024</span>
+          </div>
+        </div>
+        <div class="fc" data-dept="maths">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#2A1A0F,#4A3010);color:#E8AF4A;">MC</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Mahendra Choudhary</div>
+            <span class="fc-subject">Mathematics</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.Sc.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="maths">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A0F2A,#2A1A4A);color:#E8AF4A;">AKY</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Ashok Kumar Yadav</div>
+            <span class="fc-subject">Mathematics</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.Sc.</span></div>
+            <span class="joined-badge">Joined: July 2023</span>
+          </div>
+        </div>
+        <div class="fc" data-dept="maths">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0F1A2A,#1A2A4A);color:#E8AF4A;">KK</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Khushi Kumawat</div>
+            <span class="fc-subject">Mathematics</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.Sc.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HUMANITIES -->
+    <div class="dept-section" data-dept="humanities">
+      <div class="dept-header">
+        <div class="dept-icon" style="background:#EBF0FF;"><svg fill="none" viewBox="0 0 24 24" stroke="#3B5BDB"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div>
+          <div class="dept-name">Department of Humanities &amp; Social Sciences</div>
+          <div class="dept-count">13 Faculty Members</div>
+        </div>
+      </div>
+      <div class="faculty-grid-dense">
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#2D1A4A,#3A2260);color:#E8AF4A;">ZN</div>
+          <div class="fc-body">
+            <div class="fc-name">Dr. Zargul Niazi</div>
+            <span class="fc-subject">Political Science · Principal</span>
+            <div class="fc-quals"><span class="fc-q q-phd">Ph.D</span><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A2A4A,#2A3A60);color:#E8AF4A;">AL</div>
+          <div class="fc-body">
+            <div class="fc-name">Dr. Anju Lata</div>
+            <span class="fc-subject">Political Science</span>
+            <div class="fc-quals"><span class="fc-q q-phd">Ph.D</span><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#2A1A0F,#4A3010);color:#E8AF4A;">VS</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Varsha Soni</div>
+            <span class="fc-subject">Political Science</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0F2A1A,#1A4A2A);color:#E8AF4A;">MC</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Monika Choudhary</div>
+            <span class="fc-subject">Economics</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#2A0F1A,#4A1A2A);color:#E8AF4A;">PK</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Priyanka Kumawat</div>
+            <span class="fc-subject">Economics</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0F1A2A,#1A2A3A);color:#E8AF4A;">JJ</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Jyoti Jangir</div>
+            <span class="fc-subject">Economics</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span><span class="fc-q" style="background:#e0f0ff;color:#1565c0;">SLAT</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A2A0F,#2A3A1A);color:#E8AF4A;">NK</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Navneet Khandelwal</div>
+            <span class="fc-subject">Economics</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A0F2A,#2A1A3A);color:#E8AF4A;">KC</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Kamlesh Choudhary</div>
+            <span class="fc-subject">Geography</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0A1A2A,#142A3A);color:#E8AF4A;">MLC</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Mohan Lal Choudhary</div>
+            <span class="fc-subject">Geography</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#2A1A0A,#3A2A14);color:#E8AF4A;">MY</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Manmohan Yadav</div>
+            <span class="fc-subject">History</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A2A1A,#2A3A2A);color:#E8AF4A;">AN</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Anurag Nitharwal</div>
+            <span class="fc-subject">History</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0F0A2A,#1A142A);color:#E8AF4A;">SMG</div>
+          <div class="fc-body">
+            <div class="fc-name">Mrs. Santosh Mangawa</div>
+            <span class="fc-subject">History</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#2A0A1A,#3A142A);color:#E8AF4A;">MK</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Maina Kumari</div>
+            <span class="fc-subject">Public Administration</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span><span class="fc-q" style="background:#e0f0ff;color:#1565c0;">M.Phil</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A0A0A,#2A1414);color:#E8AF4A;">VKS</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Vinod Kumar Samota</div>
+            <span class="fc-subject">Sociology</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="humanities">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0A1A0A,#142A14);color:#E8AF4A;">MKW</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Mousam Kumawat</div>
+            <span class="fc-subject">Drawing &amp; Painting</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LANGUAGES -->
+    <div class="dept-section" data-dept="languages">
+      <div class="dept-header">
+        <div class="dept-icon" style="background:#F3E8FF;"><svg fill="none" viewBox="0 0 24 24" stroke="#7B2D8B"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg></div>
+        <div>
+          <div class="dept-name">Department of Languages &amp; Literature</div>
+          <div class="dept-count">6 Faculty Members</div>
+        </div>
+      </div>
+      <div class="faculty-grid-dense">
+        <div class="fc" data-dept="languages">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#2A0F2A,#4A1A4A);color:#E8AF4A;">AKJ</div>
+          <div class="fc-body">
+            <div class="fc-name">Mrs. Anita Kumari Jat</div>
+            <span class="fc-subject">Hindi Literature</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="languages">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0F0F2A,#1A1A4A);color:#E8AF4A;">KK</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Kshama Kanwar</div>
+            <span class="fc-subject">Hindi</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="languages">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A1A0F,#2A2A1A);color:#E8AF4A;">JS</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Jitendra Shardul</div>
+            <span class="fc-subject">English Literature</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="languages">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0F1A1A,#1A2A2A);color:#E8AF4A;">SS</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Sarita Saini</div>
+            <span class="fc-subject">English</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="languages">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#2A1A0A,#4A2A14);color:#E8AF4A;">GS</div>
+          <div class="fc-body">
+            <div class="fc-name">Mr. Gajanand Sepat</div>
+            <span class="fc-subject">Sanskrit</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="languages">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0A2A1A,#144A2A);color:#E8AF4A;">KL</div>
+          <div class="fc-body">
+            <div class="fc-name">Mrs. Kusumlata</div>
+            <span class="fc-subject">Sanskrit</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.A.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMMERCE -->
+    <div class="dept-section" data-dept="commerce">
+      <div class="dept-header">
+        <div class="dept-icon" style="background:#FFF3E0;"><svg fill="none" viewBox="0 0 24 24" stroke="#E65100"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div>
+          <div class="dept-name">Department of Commerce &amp; Business Administration</div>
+          <div class="dept-count">3 Faculty Members</div>
+        </div>
+      </div>
+      <div class="faculty-grid-dense">
+        <div class="fc" data-dept="commerce">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#2A1A0A,#4A3014);color:#E8AF4A;">SC</div>
+          <div class="fc-body">
+            <div class="fc-name">Ms. Sangeeta Choudhary</div>
+            <span class="fc-subject">ABST — Accountancy</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.Com.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="commerce">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#0A1A2A,#142A3A);color:#E8AF4A;">YK</div>
+          <div class="fc-body">
+            <div class="fc-name">Mrs. Yogesh Kumari</div>
+            <span class="fc-subject">EAFM — Finance</span>
+            <div class="fc-quals"><span class="fc-q q-msc">M.Com.</span></div>
+          </div>
+        </div>
+        <div class="fc" data-dept="commerce">
+          <div class="fc-avatar" style="background:linear-gradient(135deg,#1A0A2A,#2A143A);color:#E8AF4A;">SJ</div>
+          <div class="fc-body">
+            <div class="fc-name">Mrs. Shobha Jangid</div>
+            <span class="fc-subject">BADM — Business Admin.</span>
+            <div class="fc-quals"><span class="fc-q q-net">NET</span><span class="fc-q q-msc">M.Com.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No results message -->
+    <div id="noResults" style="display:none;text-align:center;padding:60px;color:var(--text-light);">
+      <p style="font-size:1.1rem;">No faculty members found matching your search.</p>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<div id="footer-container"></div>
+<div id="fab-container"></div>
+<script src="main.js"></script>
+<script>
+function filterFaculty() {
+  const search = document.getElementById('facultySearch').value.toLowerCase();
+  const dept = document.getElementById('deptFilter').value;
+  let anyVisible = false;
+  document.querySelectorAll('.fc').forEach(card => {
+    const name = card.querySelector('.fc-name')?.textContent.toLowerCase() || '';
+    const subject = card.querySelector('.fc-subject')?.textContent.toLowerCase() || '';
+    const cardDept = card.dataset.dept || '';
+    const matchSearch = name.includes(search) || subject.includes(search);
+    const matchDept = dept === 'all' || cardDept === dept;
+    if (matchSearch && matchDept) { card.style.display = ''; anyVisible = true; }
+    else { card.style.display = 'none'; }
+  });
+  document.querySelectorAll('.dept-section').forEach(section => {
+    const visible = Array.from(section.querySelectorAll('.fc')).some(c => c.style.display !== 'none');
+    section.style.display = visible ? '' : 'none';
+  });
+  document.getElementById('noResults').style.display = anyVisible ? 'none' : 'block';
+}
+</script>
+</body>
+</html>
