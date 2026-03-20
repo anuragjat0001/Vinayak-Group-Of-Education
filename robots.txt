@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vinayakgroupchomu.edu.in/sitemap.xml
