@@ -642,7 +642,23 @@ async function init() {
   }, 200));
 }
 
-// Entry point
+//function loadComponent(id, file) {
+  fetch(file)
+    .then(res => {
+      if (!res.ok) throw new Error("Failed");
+      return res.text();
+    })
+    .then(data => {
+      document.getElementById(id).innerHTML = data;
+    })
+    .catch(() => {
+      console.log("Component load failed:", file);
+    });
+}
+
+// CALL THIS
+loadComponent('nav-container', 'components/nav.html');
+loadComponent('footer-container', 'components/footer.html'); Entry point
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
